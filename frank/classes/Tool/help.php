@@ -27,7 +27,7 @@ can be used to select it.
 	}
 	
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		//Is there a command listed?
 		$cmd = array_shift($args);
 		if ($cmd) {

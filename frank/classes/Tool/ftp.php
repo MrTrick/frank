@@ -17,6 +17,6 @@ class Tool_ftp extends Tool_Client {
 	public static function description() { return 'Remote file transfer client'; }
 	public static function service() { return 'ftpd'; }
 	
-	public static function run($args, &$session) { return parent::run($args, $session, __CLASS__); }
-	public static function help() { return parent::help('ftp'); }
+	public static function run($args, &$session, $class=null) { return parent::run($args, $session, __CLASS__); }
+	public static function help($alias=null) { return parent::help('ftp'); }
 }

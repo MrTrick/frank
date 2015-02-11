@@ -36,7 +36,7 @@ Display the contents of the readme.txt file in the current directory
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 1) return Response::error("Too many arguments");
 		$file = $args[0];
 		if (!$file) return Response::error("Missing argument, see 'help cat' for usage.");

@@ -15,7 +15,7 @@ License:
 
 class Tool_find extends Tool {
 	public static function description() { return 'Search tool'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 'find - Search tool
 <b>Usage:</b> find [QUERY] [FOLDER]
 Search for files or folders matching the QUERY options. 
@@ -57,7 +57,7 @@ Search within the current directory for files that contain the word <i>jump</i>.
 		$args['out'][] = '/'.implode('/',$x);
 	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		$path = null;
 		$name_filters = array();
 		$content_filters = array();

@@ -33,7 +33,7 @@ Check which computers on eth0\'s network are accessible.
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 2) return Response::error("Too many arguments");
 		//Load the ethernet interfaces on that computer
 		$interfaces = $session->computer->read('/dev/net', $session);

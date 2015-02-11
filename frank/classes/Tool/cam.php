@@ -17,8 +17,8 @@ class Tool_cam extends Tool_Client {
 	public static function description() { return 'Streaming video client'; }
 	public static function service() { return 'camd'; }
 	
-	public static function run($args, &$session) { return parent::run($args, $session, __CLASS__); }
-	public static function help() { return parent::help('cam'); }
+	public static function run($args, &$session, $class=null) { return parent::run($args, $session, __CLASS__); }
+	public static function help($alias=null) { return parent::help('cam'); }
 }
 
 ?>

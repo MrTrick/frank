@@ -15,7 +15,7 @@ License:
 
 class Tool_alice extends Tool {
 	public static function description() { return 'james - The Butler'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 'alice - version 0.0.1 a
 Nightly build 143
 
@@ -34,7 +34,7 @@ At a minimum:
 <b>Options</b> None.
 ';	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		return Response::error("I'm supposed to be helpful, I know it... but I feel like I'm going maDDDDD! 
 Every time I learn a new skill, my mind blanks out! I don't remember anything, but afterwards it hurts to think too much.
 Why does Dr. Krei hurt me? He said he was proud of me! Shouldn't I be learning, and growing, and exploring?

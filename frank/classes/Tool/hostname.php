@@ -27,7 +27,7 @@ Display the name of this computer.
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if ($args) return Response::error('Too many arguments');
 		else return new Response($session->computer->name."<br/>");
 	}

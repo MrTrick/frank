@@ -42,7 +42,7 @@ Stop the \'eth0\' interface.
 	}
 	
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		$interfaces = $session->computer->read('/dev/net', $session);
 		if (!$args) {
 			$r = "Network interfaces:<br/>";

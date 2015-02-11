@@ -39,7 +39,7 @@ class Loader {
 			self::$frank =& $_SESSION['frank'];
 			unset($_SESSION['frank']);
 		}
-		else if (isset($_SESSION['frank_id']) and $id = $_SESSION['frank_id'] and $c = file_get_contents("stored/$id.o"))
+		else if (isset($_SESSION['frank_id']) and $id = $_SESSION['frank_id'] and $c = @file_get_contents("stored/$id.o"))
 			self::$frank = unserialize($c);
 		else 
 			throw new Exception("Cannot load frank!");
@@ -56,7 +56,7 @@ class Loader {
 		//Does an existing log file exist? Move it to another folder...
 		if (is_file("stored/$id.log")) {
 			for ($c=1;is_file("stored/won/$id-$c.log");$c++);
-			@rename("stored/$id.log", "stored/won/$id-$c.log");
+		   @rename("stored/$id.log", "stored/won/$id-$c.log"); //Don't test and throw if rename fails; user should see game credits screen, not system failure!
 		}
 	}
 	
@@ -67,11 +67,13 @@ class Loader {
 		//Append the input and output to the command log...
 		if (self::$save_history) {
 			$out = $o->html_mode ? $o->stdout : nl2br(str_replace(' ','&nbsp;',htmlspecialchars($o->stdout)));
-			file_put_contents("stored/$id.log", "<span class=\"input\">$i</span><br>$out", FILE_APPEND);
+			$res = @file_put_contents("stored/$id.log", "<span class=\"input\">$i</span><br>$out", FILE_APPEND);
+			if ($res === false) throw new Exception("Cannot save game log to file, possible folder permission issues.");
 		}
 		
 		//Store the state 
-		file_put_contents("stored/$id.o", serialize(self::$frank));	
+		$res = @file_put_contents("stored/$id.o", serialize(self::$frank));	
+		if ($res === false) throw new Exception("Cannot save game progress to file, possible folder permission issues.");
 	}
 	
 	//Called on initial page load...

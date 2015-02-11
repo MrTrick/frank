@@ -15,7 +15,7 @@ License:
 
 class Tool_mkdir extends Tool {
 	public static function description() { return 'Create a new folder'; }
-	public static function help() { return 	
+	public static function help($alias=null) { return 	
 'mkdir - Create a new folder
 <b>Usage:</b> mkdir FOLDER
 Try and create a new FOLDER. 
@@ -28,7 +28,7 @@ Create a folder <i>test</i> within the /tmp directory.
 '; 
 	}
 
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 1) 
 			return Response::error("Too many arguments");
 		else if (!$p = array_shift($args))

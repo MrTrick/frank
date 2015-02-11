@@ -39,7 +39,7 @@ At a minimum:
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		//if (count($args)) return Response::error("Too many arguments");
 		
 		//See which networks the computer is connected to...

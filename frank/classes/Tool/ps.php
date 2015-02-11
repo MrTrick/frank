@@ -15,7 +15,7 @@ License:
 
 class Tool_ps extends Tool {
 	public static function description() { return 'Show installed services'; }
-	public static function help() { 
+	public static function help($alias=null) { 
 		return 
 'ps - Show installed services
 <b>Usage:</b> ps
@@ -24,7 +24,7 @@ Return a list of services installed on this machine.
 ';
 	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if ($args) return Response::error("Too many arguments");
 		$services = array_keys($session->computer->getNode('/boot/'));
 		$o="Installed services on {$session->computer->name}:\n";

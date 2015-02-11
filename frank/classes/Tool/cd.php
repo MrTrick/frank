@@ -38,7 +38,7 @@ Change to the directory above the current directory
 	}
 	
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 1) 
 			return Response::error("Too many arguments");
 		else if (!count($args)) {

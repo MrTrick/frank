@@ -27,7 +27,7 @@ Return the currently logged-in user.
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (!count($args)) return new Response($session->user."\n");
 		else return Response::error("Too many arguments");
 	}

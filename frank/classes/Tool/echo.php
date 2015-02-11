@@ -15,9 +15,9 @@ License:
 
 class Tool_echo extends Tool {
 	public static function description() { return '...'; }
-	public static function help() { return '...'; }
+	public static function help($alias=null) { return '...'; }
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		return Response::error("not implemented yet");	
 	}
 }

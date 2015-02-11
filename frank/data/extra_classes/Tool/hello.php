@@ -15,12 +15,12 @@ License:
 
 class Tool_hello extends Tool {
 	public static function description() { return 'Executable file'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 'hello.c - compiled 2011/01/24 14:16:01
 '; 
 	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		return new Response("Hello world!\n");
 	}
 }

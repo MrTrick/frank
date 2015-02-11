@@ -15,7 +15,7 @@ License:
 
 class Tool_su extends Tool {
 	public static function description() { return 'Change user'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 	'su - Change current user
 <b>Usage:</b> su [USER]
 Try and open a new session as USER. If not specified, USER is <i>root</i>.
@@ -27,7 +27,7 @@ If the correct password is given, a new session will open with <i>joe</i> as use
 '; 
 	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 1) return Response::error("Too many arguments");
 		if (!$user=array_shift($args)) $user = 'root';
 		$session->attach(array(__CLASS__, 'login'));

@@ -17,6 +17,6 @@ class Tool_ssh extends Tool_Client {
 	public static function description() { return 'Remote shell client'; }
 	public static function service() { return 'sshd'; }
 	
-	public static function run($args, &$session) { return parent::run($args, $session, __CLASS__); }
-	public static function help() { return parent::help('ssh'); }
+	public static function run($args, &$session, $class=null) { return parent::run($args, $session, __CLASS__); }
+	public static function help($alias=null) { return parent::help('ssh'); }
 }

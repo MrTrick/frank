@@ -15,7 +15,7 @@ License:
 
 class Tool_cp extends Tool {
 	public static function description() { return 'Copy files or folders'; }
-	public static function help() { 
+	public static function help($alias=null) { 
 		return 
 'cp - Copy files or folders
 <b>Usage:</b> cp SOURCE TARGET
@@ -36,7 +36,7 @@ Try to copy the <i>fol1</i> directory to <i>/tmp</i> <i>(fails, because /tmp alr
 ';
 	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 2) return Response::error("Too many arguments");
 		else if (!$s = array_shift($args))
 			return Response::error("You must specify a source file or folder to copy.");

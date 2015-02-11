@@ -36,10 +36,10 @@ List the contents of the test directory in the current directory
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {	
+	public static function run($args, &$session, $class=null) {	
 		if (count($args) > 1) return Response::error("Too many arguments");
-		$path=$session->path($args[0]);
-		$node =& $session->computer->read($path, $session);
+		$path=$session->path(isset($args[0]) ? $args[0] : null);
+		$node = $session->computer->read($path, $session);
 		if ($node===false) 
 			return Response::error(); //"Folder does not exist");
 		else if (!is_array($node))

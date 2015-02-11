@@ -15,7 +15,7 @@ License:
 
 class Tool_james extends Tool {
 	public static function description() { return 'james - The Butler'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 'james - The Butler
 Version 1.1.25
 Property of Applied Artificial Intelligence
@@ -26,7 +26,7 @@ For the install to be successful, you must have administrator rights while insta
 
 ';	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		return new Response("<b>Installing james - The Butler - on your system</b>\n".
 		"Unpacking install files...\n".
 		"Looking up dependencies...\n".

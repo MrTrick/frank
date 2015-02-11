@@ -22,7 +22,7 @@ if (!$_POST) die("Go away!");
 if (isset($_POST['init'])) {
 	$out = Loader::init();
 }
-else {
+else try {
 	Loader::load();
 
 	$in = htmlspecialchars(trim($_POST['stdin']));
@@ -36,7 +36,9 @@ else {
 	Loader::save($in, $out);
 	
 	//Check to see if the user finished the game...if so, retire their log files.
-	if ($out->game_over) Loader::finish();
+	if (isset($out->game_over)) Loader::finish();
+} catch (Exception $e) { 
+   $out = Response::error("Game Error: ".$e->getMessage()); 
 }
 
 echo json_encode( $out );

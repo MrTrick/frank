@@ -15,7 +15,7 @@ License:
 
 class Tool_rm extends Tool {
 	public static function description() { return 'Remove files or folders'; }
-	public static function help() { 
+	public static function help($alias=null) { 
 		return
 'rm - Remove files or folders
 <b>Usage:</b> rm TARGET
@@ -30,7 +30,7 @@ Remove the <i>testdir</i> folder from /tmp
 Try to remove the <i>/home/joe</i> folder <i>(fails, user doesn\'t have permission)</i>
 ';
 }
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 1) 
 			return Response::error("Too many arguments");
 		else if (!$p = array_shift($args))

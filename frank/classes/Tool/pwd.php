@@ -27,7 +27,7 @@ Show the current directory.
 	}
 
 	/*Run the command, with the given args.*/
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (!count($args)) return new Response('/'.implode('/', $session->pwd).'<br/>');
 		else return Response::error("Too many arguments");
 	}

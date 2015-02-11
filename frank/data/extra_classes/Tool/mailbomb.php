@@ -15,7 +15,7 @@ License:
 
 class Tool_mailbomb extends Tool {
 	public static function description() { return 'Viascam Bulk Mailing Express!&reg;'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 'mailbomb - Viascam Bulk Mailing Express!&reg;
 Version 5.2.55
 Property of Viascam
@@ -41,7 +41,7 @@ Running:
 Will send an email to everybody in that list, along with the attachments.
 ';	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (!$to=array_shift($args)) 
 			return Response::error("Not enough arguments. For help, type ./mailbomb --help");
 		else if (!$msg=array_shift($args)) 

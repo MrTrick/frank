@@ -15,7 +15,7 @@ License:
 
 class Tool_wake extends Tool {
 	public static function description() { return 'Wake-on-lan tool'; }
-	public static function help() { return 
+	public static function help($alias=null) { return 
 	'wake - Wake-on-lan tool
 <b>Usage:</b> wake COMPUTER
 Send out a WOL packet across the network. 
@@ -30,7 +30,7 @@ if PC_FRED is already running, this command has no effect.
 '; 
 	}
 	
-	public static function run($args, &$session) {
+	public static function run($args, &$session, $class=null) {
 		if (count($args) > 1) 
 			return Response::error("Too many arguments");
 		else if (!$target_name = array_shift($args))
