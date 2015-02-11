@@ -1,24 +1,17 @@
 <?
-/*----------------------------------------------------------------------------------------------------------------------
-FRANK Game:
-Copyright: Patrick Barnes (c) 2008
-Description: 
-	FRANK is trapped inside a research lab. How can he escape?
+/*------------------------------------------------------------------------------------------------
+FRANK Engine and Game:
+Copyright (c) 2008 - 2015 MrTrick
+Description:
+   Simulation of any number of connected computers, and their connections.
+   Game content, plot, and tools for 'FRANK' game.
 Creator:
-	Patrick Barnes aka MrTrick  (mrtrick@gmail.com)
+   Patrick Barnes aka MrTrick  (mrtrick (at) mindbleach.com)
 Web Location:
-	http://mindbleach.com/frank
-----------------------------------------------------------------------------------------------------------------------
-The FRANK game is *NOT* licensed under the same terms as the FRANK Engine.
-It must not be reproduced, distributed, derived, or otherwised used without express permission of the author - MrTrick.
-
-The name 'frank' must not be used as the protagonist of a game built using the FRANK Engine without express permission
-of the author - MrTrick.
-
-Some exceptions exist:
-- The data_common.php file may be used in the derivation of a new game.
-- The short_words.txt file may be used in the derivation of a new game.
-----------------------------------------------------------------------------------------------------------------------*/
+   http://mindbleach.com/frank
+License:
+   MIT
+-------------------------------------------------------------------------------------------------*/
 
 class GameOver {
 	public static function getEndSequence() {
@@ -60,10 +53,10 @@ class GameOver {
 		'<span class="error"><b>Segmentation fault:</b> Screw you, Dr Krei!</span><br/>'+
 		'<br/>'+
 		'<b>Credits:</b><br/>'+
-		'<dl><dt>Written, designed, coded and tested by:</dt><dd><a href="mailto:mrtrick@gmail.com">MrTrick</a></dd>'+
-		'<dt>Llama wrangling by:</dt><dd><a href="mailto:mrtrick@gmail.com">MrTrick</a></dd>'+
+		'<dl><dt>Written, designed, coded and tested by:</dt><dd><a href="mailto:mrtrick@mindbleach.com">MrTrick</a></dd>'+
+		'<dt>Llama wrangling by:</dt><dd><a href="mailto:mrtrick@mindbleach.com">MrTrick</a></dd>'+
 		'<dt>MrTrick dressed, organised, supported, and generally tolerated by:</dt><dd>MrsTrick</dd></dl>'+
-		'<sub><i>Frank is &copy; 2008 - MrTrick</i></sub>';
+		'<sub><i>Frank is &copy; 2008 - 2015 MrTrick</i></sub>';
 				
 		document.getElementsByTagName('body')[0].appendChild(epilogue);
 	
