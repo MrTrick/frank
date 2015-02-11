@@ -121,18 +121,18 @@ class Session {
 	public function execute($input) {
 		//Is something still running in the session? If so, pass that input directly to it...
 		if ($this->state)
-			$output = call_user_func($this->state, $input, @$this);
+			$output = call_user_func($this->state, $input, &$this);
 		//No tool currently running, try and execute one...
 		else if ($input) {
 			$args = preg_split("/\s+/", trim($input));
 			$cmd_name = array_shift($args);
 			if ($cmd_name == 'exit') return false;
-			if (!$cmd = $this->computer->getTool($cmd_name, $this)) 
+			if (!$cmd = $this->computer->getTool($cmd_name, &$this)) 
 				$output = Response::error();
 			else if ($args[0] == '--help') //Special case - alias '$tool --help' to 'help $tool'
-				$output = call_user_func(array('Tool_help', 'run'), array($cmd_name), @$this);
+				$output = call_user_func(array('Tool_help', 'run'), array($cmd_name), &$this);
 			else
-				$output = call_user_func(array($cmd, 'run'), $args, @$this);
+				$output = call_user_func(array($cmd, 'run'), $args, &$this);
 		}
 		//Enter was pressed at the shell, return a blank response...
 		else $output = new Response("");
