@@ -27,19 +27,19 @@ class Loader {
 		require_once('data/scenario.php');
 		self::$frank = array();
 		self::$frank['time']=$TIME;
+
 		self::$frank['entry'] = new Session($home, 'frank');
-		
 		self::$frank['computers'] =& Computer::$computers;
 		self::$frank['networks'] =& Network::$networks;
 	}
 	
 	//Load a game from a saved point
 	public static function load() {
-		if ($_SESSION['frank']) {
+		if (isset($_SESSION['frank'])) {
 			self::$frank =& $_SESSION['frank'];
 			unset($_SESSION['frank']);
 		}
-		else if ($id=$_SESSION['frank_id'] and $c=file_get_contents("stored/$id.o"))
+		else if (isset($_SESSION['frank_id']) and $id = $_SESSION['frank_id'] and $c = file_get_contents("stored/$id.o"))
 			self::$frank = unserialize($c);
 		else 
 			throw new Exception("Cannot load frank!");
@@ -51,7 +51,7 @@ class Loader {
 	
 	//Game over, delete the object, and store the history.
 	public static function finish() {
-		if (!$id=$_SESSION['frank_id']) throw new Exception("No ID available!");
+		if (!isset($_SESSION['frank_id']) or !$id=$_SESSION['frank_id']) throw new Exception("No ID available!");
 		unlink("stored/$id.o");
 		//Does an existing log file exist? Move it to another folder...
 		if (is_file("stored/$id.log")) {
@@ -62,7 +62,7 @@ class Loader {
 	
 	//Store the game state and history log
 	public static function save($i, $o) {
-		if (!$id=$_SESSION['frank_id']) throw new Exception("No ID available to save to!");
+		if (!isset($_SESSION['frank_id']) or !$id=$_SESSION['frank_id']) throw new Exception("No ID available to save to!");
 	
 		//Append the input and output to the command log...
 		if (self::$save_history) {
@@ -80,8 +80,8 @@ class Loader {
 	// - if not, start one anew without a prompt.
 	public static function init() {
 		//Try and get a session id ...
-		$id = $_SESSION['frank_id'];
-		if (!$id) $id = $_COOKIE['progress'];
+		$id = isset($_SESSION['frank_id']) ? $_SESSION['frank_id'] : null;
+		if (!$id) $id = isset($_COOKIE['progress']) ? $_COOKIE['progress'] : null;
 		if ($id and !is_file("stored/$id.o")) $id=false; //Check if it's actually good...
 				
 		//New game?
@@ -95,15 +95,15 @@ class Loader {
 			//Store frank state just in the session for now, don't save until the user actually does something.
 			self::create();
 			$_SESSION['frank'] =& self::$frank;
-			
+
 			//Return a welcome message.
 			return new Response($_SESSION['frank']['entry']->getWelcome());
 		}
 		//Continue an existing game...
 		else {
 			//An ID exists, make sure that it is propagated across both storage methods
-			if (!$_SESSION['frank_id']) $_SESSION['frank_id'] = $id;
-			if (!$_COOKIE['progress']) setcookie('progress', $id, time()+2592000);
+			if (!isset($_SESSION['frank_id']) or !$_SESSION['frank_id']) $_SESSION['frank_id'] = $id;
+			if (!isset($_COOKIE['progress']) or !$_COOKIE['progress']) setcookie('progress', $id, time()+2592000);
 			
 			//Return a prompt:
 			$prompt = new Loader();
@@ -117,7 +117,7 @@ class Loader {
 			self::create();
 			
 			//Does an existing log file exist? Move it to another folder...
-			if ($id=$_SESSION['frank_id'] and is_file("stored/$id.log")) {
+			if (isset($_SESSION['frank_id']) and $id=$_SESSION['frank_id'] and is_file("stored/$id.log")) {
 				for ($c=1;is_file("stored/fail/$id-$c.log");$c++);
 				@rename("stored/$id.log", "stored/fail/$id-$c.log");
 			}
@@ -125,7 +125,7 @@ class Loader {
 			return new Response(self::getEntry()->getWelcome());
 		}
 		else {
-			if (!$id=$_SESSION['frank_id']) throw new Exception("No ID available to restore from!");
+			if (!isset($_SESSION['frank_id']) or !$id=$_SESSION['frank_id']) throw new Exception("No ID available to restore from!");
 			self::load();
 			$history = file_get_contents("stored/$id.log");	 //If resuming an existing game, load the history as well... (this might take a while to transmit?)
 			

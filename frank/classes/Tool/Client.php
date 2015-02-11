@@ -14,9 +14,9 @@ License:
 -------------------------------------------------------------------------------------------------*/
 
 //'Generic client to be overriden for connecting to each service';
-abstract class Tool_Client extends Tool {
+class Tool_Client extends Tool {
 	//Return the name of the service that the client connects to.
-	public abstract static function service();
+	public static function service() { throw new Exception("Must override this function."); }
 
 	/* Return help for this tool */
 	public static function help($alias=null) {
@@ -61,7 +61,7 @@ The HOST must have an $service_name service running for it to accept the connect
 		if (!$out) $out = Response::error(); 
 		
 		//If the server disconnected, close...
-		if (!$session->state_info['service']) {
+		if (!isset($session->state_info['service'])) {
 			$session->detach();
 			$out->history='pop';
 		}
@@ -71,4 +71,4 @@ The HOST must have an $service_name service running for it to accept the connect
 
 
 }
-?>
+

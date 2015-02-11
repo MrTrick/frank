@@ -40,10 +40,10 @@ if PC_FRED is already running, this command has no effect.
 		$local_networks = array();
 		foreach($session->computer->getNode('/dev/net') as $alias=>$c) {
 			$config = explode_assoc("\n", "=", $c);
-			if ($config['status']=='up' and Network::$networks[$config['network']]) $local_networks[] = $config['network'];
+			if ($config['status']=='up' and isset(Network::$networks[$config['network']])) $local_networks[] = $config['network'];
 		}
 		//Find the target computer
-		if (!$target =& Computer::$computers[$target_name])
+		if (!isset(Computer::$computers[$target_name]) || !$target =& Computer::$computers[$target_name])
 			return Response::error("No response..."); //Doesn't exist, so can't be woken. ;-)
 		
 		//Look through the networks the target computer has...

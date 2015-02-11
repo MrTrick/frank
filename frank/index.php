@@ -19,7 +19,7 @@ require_once 'common.php';
 if (!$_POST) die("Go away!");
 
 //When the page first loads, run the init scripts...
-if ($_POST['init']) {
+if (isset($_POST['init'])) {
 	$out = Loader::init();
 }
 else {

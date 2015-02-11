@@ -46,7 +46,7 @@ Search within the current directory for files that contain the word <i>jump</i>.
 			if($name) array_push($args['path'], $name);
 			array_walk($contents, array(__CLASS__, 'find'), $args);
 			array_pop($args['path']);
-			if ($args['content_filters']) return; //Drop out early if there are any content filters active...
+			if (isset($args['content_filters'])) return; //Drop out early if there are any content filters active...
 		}
 		foreach($args['name_filters'] as $filter)
 			if (!preg_match($filter, $name)) return; //Ignore any files or folders that don't match a name filter

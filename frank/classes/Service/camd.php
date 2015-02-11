@@ -32,8 +32,8 @@ class Service_camd extends Service {
 	public function __construct(&$host, $args) {
 		$this->image = $args['image'];
 		list($this->w, $this->h) = $args['dimensions'];
-		list($this->camera_x, $this->camera_y) = $args['camera'] ? $args['camera'] : array(0,0);
-		list($this->fov_w, $this->fov_h) = $args['fov'] ? $args['fov'] : array(70,22);
+		list($this->camera_x, $this->camera_y) = isset($args['camera']) ? $args['camera'] : array(0,0);
+		list($this->fov_w, $this->fov_h) = isset($args['fov']) ? $args['fov'] : array(70,22);
 		parent::__construct($host, $args);
 	}
 	
@@ -98,4 +98,3 @@ class Service_camd extends Service {
 	}			
 }
 
-?>

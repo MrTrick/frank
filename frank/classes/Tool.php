@@ -17,8 +17,8 @@ License:
 Tools are completely static - any state is to be stored in the relevant session's state_info
 
 */
-abstract class Tool {
-	abstract public static function description();
-	abstract public static function help();	
-	abstract public static function run($args, &$session);
+class Tool {
+	public static function description() { throw new Exception("Must override this function."); }
+	public static function help($alias = null) { throw new Exception("Must override this function."); }
+	public static function run($args, &$session, $class=null) { throw new Exception("Must override this function."); }
 }

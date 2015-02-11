@@ -20,7 +20,7 @@ abstract class Service {
 	//Build the service...
 	public function __construct(Computer &$host, $args=null) {
 		$this->host =& $host;
-		$this->auth_required = $args['auth_required'];
+		$this->auth_required = isset($args['auth_required']) ? $args['auth_required'] : null;
 	}
 
 	//Connect to the service from a session, with the given credentials. Returns 'true' on success, 'false' (and sets error) on failure.
@@ -59,7 +59,7 @@ abstract class Service {
 	public function prompt(Session &$client_session, $input=false) {
 		$session_data =& $client_session->state_info['service_info'];
 		//Need to get login name?
-		if (!$session_data['user'] and $input===false)
+		if (!isset($session_data['user']) and $input===false)
 			return new Response("login: ");
 		//Need to get password?
 		else if (!array_key_exists('user', $session_data)) {

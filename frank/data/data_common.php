@@ -18,7 +18,7 @@ function get_computer_name($prefix, $from, $to) {
 	static $taken=array();
 	do {
 		$name = $prefix.mt_rand($from,$to);
-	} while($taken[$name]);
+	} while(isset($taken[$name]));
 	$taken[$name]=true;
 	return $name;
 }

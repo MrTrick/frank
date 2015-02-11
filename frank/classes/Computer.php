@@ -105,7 +105,7 @@ class Computer {
 		$node =& $this->filesystem; //starting at the root node.
 		do {
 			//If a permissions files exists, check it (user-specific permissions override all permissions)
-			if (is_array($node) and $node['.permissions'] and is_string($node['.permissions'])) {
+			if (is_array($node) and isset($node['.permissions']) and is_string($node['.permissions'])) {
 				$permissions = explode_assoc("\n",":",$node['.permissions']);
 				if (isset($permissions['all'])) $p = $permissions['all'];
 				if (isset($permissions[$session->user])) $p = $permissions[$session->user];

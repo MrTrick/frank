@@ -13,7 +13,7 @@ License:
    MIT
 -------------------------------------------------------------------------------------------------*/
 
-define('DECOY_ERROR', "Implementation error - should not be calling this function");
+if (!defined('DECOY_ERROR')) define('DECOY_ERROR', "Implementation error - should not be calling this function");
 class Computer_Decoy extends Computer {
 	// Decoy computer has no files...
 	protected $filesystem = array();

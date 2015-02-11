@@ -20,8 +20,9 @@ header("Cache-control: private"); //IE 6 Fix for dodgy sessions handling...
 define('SALT', 'aliiiiiive!');
 
 function __autoload($class_name) {
-	@include_once 'classes/'.str_replace('_','/',$class_name).'.php';
-	@include_once 'data/extra_classes/'.str_replace('_','/',$class_name).'.php';
+   $sub = str_replace('_','/',$class_name).'.php';
+   foreach( array('classes/'.$sub, 'data/extra_classes/'.$sub) as $path)
+       if ( file_exists($path) ) require_once( $path );
 }
 //--------------------------------------------------------------------------------------------------------------------
 $error = '';
