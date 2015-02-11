@@ -1,0 +1,49 @@
+<!----------------------------------------------------------------------------------------------------------------------
+FRANK Engine:
+Copyright: Patrick Barnes (c) 2008
+Description: 
+	Simulation of any number of connected computers, and their connections.
+Creator:
+	Patrick Barnes aka MrTrick  (mrtrick@gmail.com)
+Web Location:
+	http://mindbleach.com/frank
+----------------------------------------------------------------------------------------------------------------------
+The FRANK Engine is licensed under a creative commons license - Reproduction, distribution, and 
+derivation are permitted, as long as the following conditions are upheld:
+* The license is not changed - (Share-alike)
+* Non-commercial use only - (No-commercial) 
+* This header is left intact.
+* Use of this software is attributed with a phrase such as 'using the FRANK engine' and a link to http://mindbleach.com/frank (Link-back)
+
+This license does not cover the FRANK Game - see the frank/data folder for more information
+---------------------------------------------------------------------------------------------------------------------->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Strict//EN">
+<html>
+<head>
+	<title>FRANK</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<meta name="description" content="FRANK game">
+	<meta name="keywords" content="FRANK game">
+	<script type="text/javascript" src="frank.js"></script>
+	<link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body onload="load()" onfocus="javascript:input_box.focus()">
+
+
+<h2 id="heading">FRANK</h2>
+<input id="input_box" type="text" autocomplete="off" onkeydown="return keydown(getEvent(event));" onkeypress="return keypress(getEvent(event));" />
+<span id="debug"> </span>
+<div id="outer">
+	<div id="console" onclick="javascript:input_box.focus()">
+		<noscript><b class="error">Javascript Disabled!</b> FRANK needs Javascript.</noscript>
+		<span id="input_line"><span class="highlight">&nbsp;</span></span>
+	</div>
+	<span id="attrib">FRANK &copy; 2008 MrTrick</span>
+	<a href="/" target="_blank">Mindbleach</a> |
+	<a href="about.html" target="_blank">About</a><br>
+<p style="text-align:centre;font-size:8pt"><i>Playing frank? Love it? Hate it?  <A href="mailto:mrtrick at this domain">Let me know what you think.</a></i></p>	
+</div>
+
+
+</body>
+</html>

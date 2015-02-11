@@ -1,0 +1,23 @@
+<i>Activity leading up to the failure:</i>
+[00:00:00] Exited main processing loop.
+[00:00:00] Entered main processing loop.
+[00:00:02] Exited main processing loop.
+[00:00:02] Entered main processing loop.
+[00:00:02] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@3215D3F)
+[00:00:02] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@32193AE)
+[00:00:03] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@32193AF)
+[00:00:03] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@32193B0)
+[00:00:03] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@32193B1)
+[00:00:04] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@32193B4)
+[00:00:04] <span style="color:#880">Warning:</span> Invalid execution detected, blocked (@32193B5)
+[00:00:04] <span style="color:#880">Warning:</span> Invalid execution detected, blocked#@#S(@!
+[00:00:05] <span style="color:#f00">Error:</span> Intrusion detection module has commited an illegal operation!
+[00:00:05] Attempting graceful shutdown...
+[00:00:08] <span style="color:#f00">Error:</span> Intrusion detection module does not respond...
+<span style="color:#ff0"><i>Ooooo, what's this?</i></span>
+[00:00:09] <span style="color:#f00">Error:</span> Program stack is corrupted! Forcing shutdown NOW.
+<span style="color:#ff0"><i>Hey, I don't think so...</i></span>
+[00:00:10] Program stack reinitialising...
+[00:00:15] <span style="color:#880">Warning:</span> Intrusion detection module has not started.
+[00:00:18] <span style="color:#880">Warning:</span> Sandbox module has not started.
+<span style="color:#ff0"><i>Ahh, much better!</i></span>

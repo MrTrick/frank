@@ -1,0 +1,17 @@
+<i>(This is a short tutorial explaining command line basics.
+If you are unsure of how to use the command line, follow it.)</i>
+
+<b>1.0 DISPLAYING THE CONTENTS OF A FILE ON THE SCREEN</b>
+<tt>cat (concatenate)</tt>
+
+To display a file on the screen, type <i>cat filename</i>
+The command cat can be used to display the contents of a file on the screen. 
+If you type: <i>cat /tut/t1.0</i> this file is displayed.
+
+A number of tutorials files exist, read through each of them with the cat command, like this:
+<i>cat /tut/t1.1
+cat /tut/t1.2
+cat /tut/t1.3
+cat /tut/t1.4
+cat /tut/t1.5</i>
+(there are more... can you find them?)

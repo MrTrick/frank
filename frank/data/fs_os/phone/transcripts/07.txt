@@ -1,0 +1,23 @@
+#Outgoing: 0-41104928133
+"Hello?"
+"Seymour, have you got a minute?"
+"Sure, what is it?"
+"I can't access the lab from my computer any more. Have you changed anything?"
+"Oh yes - I had to shut off the V?P?N? on the workstation."
+"Errm, can I turn it back on?"
+"That shouldn't be a problem - it was just a precaution while I ran some tests with alice"
+"Cool.
+*pause*
+Uh, I'm at the workstation now, and I can't log in."
+"Oh, sorry! I took the auto-login off as another precaution. Only the account I created can enable the V?P?N? again."
+"...and those details are?"
+"Oh! login as seymour, the password is {$SEYMOUR_PASSWORD}."
+"Alright, thank you, I'm in!"
+"Not a problem, I should have let you know."
+"Anything else I need to know?"
+"Oh, there is one thing. Since you hooked up the camera, be very careful about putting any security details where the camera might see them!"
+"Huh? There's no text recognition programmed into alice or frank, isn't that a bit much?!"
+"Just be careful..."
+"Sure, okay."
+"Anyway, I've got to go, I'll talk to you tomorrow."
+"Okay, bye..."

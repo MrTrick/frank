@@ -1,0 +1,8 @@
+#Outgoing: x2901
+"Dr Krei's phone, Lilah speaking."
+"Lilah! It's Bob, is Seymour around?"
+"No, he's in a meeting right now."
+"Ah. Can you just tell him, that I've fixed the problem, and he doesn't need to get a new monitor."
+"I will pass that on as soon as I see him."
+"Thanks, talk to you later."
+"Bye."

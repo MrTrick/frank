@@ -1,0 +1,1 @@
+Store temporary files here that need to be shared across multiple computers.

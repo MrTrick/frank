@@ -1,0 +1,10 @@
+NK11 Camera server
+-------------------
+
+- Connect camera to computer.
+- Install NK11_camera_driver.rpm
+
+If you want to have the camera running as a network-accessible service, install NK11_camera_server.rpm
+
+The cam client program can be distributed to whichever computers need to see the video stream. Type ./cam --help for information on usage.
+

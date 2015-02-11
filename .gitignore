@@ -1,0 +1,17 @@
+###################
+## Project-specific
+###################
+.svn
+frank/stored
+
+
+############
+## Windows
+############
+
+# Windows image file caches
+Thumbs.db
+
+# Folder config file
+Desktop.ini
+

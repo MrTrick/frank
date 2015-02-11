@@ -1,0 +1,6 @@
+#Incoming: x2112
+"Hello, Bob speaking."
+"Hi, can I talk to Arthur?"
+"Sorry, I think you have the wrong extension."
+"Oh! Sorry! Bye..."
+"Bye."

@@ -1,0 +1,11 @@
+#Outgoing: x2873
+"Bob speaking."
+"Hi Bob, can you come down to the lab right now?"
+"Sure Seymour, what's wrong?"
+"Alice tripped the containment warnings again."
+"That's not supposed to happen!"
+"Are you absolutely [sure|shore] that the thing is watertight?"
+"Yes?"
+"Anyway, get down here as soon as you can, I need some help assessing the damage."
+"Right away!"
+

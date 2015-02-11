@@ -1,0 +1,19 @@
+<b>1.6 MORE ABOUT HOME DIRECTORIES AND PATHNAMES</b>
+<tt>Understanding pathnames</tt>
+
+Type 
+<i>cd /home
+ls stuff</i>
+
+You will get a message like this -
+<span class="error">File not found</span>
+
+The reason is, stuff is not in your current working directory. To use a command on a file (or directory) not in the current working directory (the directory you are currently in), you must either cd to the correct directory, specify it's relative pathname, or specify its full (absolute) pathname. To list the contents of your stuff directory, you must type
+<i>ls (your user name)/stuff</i>
+or 
+<i>ls /home/(your user name)/stuff</i>
+
+If the pathname starts with a / , it looks for that file from the root directory - it doesn't matter what your current directory is.
+
+
+ 

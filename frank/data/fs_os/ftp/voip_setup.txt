@@ -1,0 +1,9 @@
+Lab phone setup:
+
+[ Handset ]-----[ lab_server ]-----[ (link to company pbx)
+
+The phone application stores its stuff in /phone, we've got a hardware AI board installed in the server, and a tame AI doing transcripts. Really cool stuff actually!
+
+-Bob
+
+Don't worry, the security guys are cool with this AI, he's been NNeutered! :-D

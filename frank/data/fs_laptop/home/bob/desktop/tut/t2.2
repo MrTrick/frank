@@ -1,0 +1,19 @@
+<b>2.2 MOVING FILES</b>
+<tt>mv (move)</tt>
+
+<i>mv file1 file2</i> moves (or renames) file1 to file2
+
+To move a file from one place to another, use the mv command. This has the effect of moving rather than copying the file, so you end up with only one file rather than two.
+
+It can also be used to rename a file, by moving the file to the same directory, but giving it a different name.
+We are now going to move the file test.bak to the tmp directory.
+
+First, change directories to your stuff directory (can you remember how?). Then, inside the stuff directory, try typing
+<i>mv test.bak /tmp</i>
+This will not work, because the computer thinks you mean to move test.bak to a file called tmp in the root directory.
+The directory tmp already exists there, so the command fails.
+Instead, use:
+<i>mv test.bak /tmp/</i> OR
+<i>mv test.bak /tmp/test.bak</i>
+
+Type <i>ls</i> and <i>ls /tmp</i> to see if it has worked.

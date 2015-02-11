@@ -1,0 +1,13 @@
+#Incoming: x2901
+"Hello, Bob speaking."
+"Hi Bob, what state is the lab in right now?"
+"A bit of a mess, to be honest. Somehow frank's monitor died over the weekend. I don't think it's anything malicious, but I'm checking through the logs right now."
+"So, can we have a demonstration tomorrow?"
+"Well, you'll have to get a monitor in here."
+"Okay, but can you check first where the fault is? frank might have done something to the bios."
+"Sure, I've got some good diagnostics stuff on my laptop."
+"Make sure you don't break the separation! My manager would kill both of us if there were a containment break."
+"Don't worry, everything is locked down properly-"
+"And get it out of there before the demonstration!"
+"Will do."
+"I'll get you a monitor this afternoon if you need it, just let me know."

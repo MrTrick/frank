@@ -1,0 +1,60 @@
+/*----------------------------------------------------------------------------------------------------------------------
+FRANK Engine:
+Copyright: Patrick Barnes (c) 2008
+Description: 
+	Simulation of any number of connected computers, and their connections.
+Creator:
+	Patrick Barnes aka MrTrick  (mrtrick@gmail.com)
+Web Location:
+	http://mindbleach.com/frank
+----------------------------------------------------------------------------------------------------------------------
+The FRANK Engine is licensed under a creative commons license - Reproduction, distribution, and 
+derivation are permitted, as long as the following conditions are upheld:
+* The license is not changed - (Share-alike)
+* Non-commercial use only - (No-commercial) 
+* This header is left intact.
+* Use of this software is attributed with a phrase such as 'using the FRANK engine' and a link to http://mindbleach.com/frank (Link-back)
+
+This license does not cover the FRANK Game - see the frank/data folder for more information
+----------------------------------------------------------------------------------------------------------------------*/
+
+.error { color: #b00; }
+.input { color: #3d1; }
+.highlight { color: #101; background-color: #3d1; }
+
+body,div,ul { margin:0; padding:0; border: none; }
+
+body {
+	color: #cce;
+	background-color: #101; 
+	font-family: Courier New, monospace;
+}
+
+ul { list-style: none; }
+a { color: #0ff; }
+div { background-color: #101; font-size: 10pt;}
+
+#outer {
+	width: 50em;
+	margin-left: auto;
+	margin-right: auto;
+}
+#console {
+	width: 49.5em;
+	height: 32em;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid;
+	overflow: auto;
+}
+
+#attrib {
+	float:right;
+}
+
+#input_line { color: #3d1; }
+
+/*Hidden offscreen*/
+#input_box { 
+	position:absolute; left: -3000px; top: 400px;
+}

@@ -1,0 +1,8 @@
+#Outgoing: x2901
+"Dr Krei speaking"
+"Hi Seymour, it's Bob here!"
+"Oh, hi Bob, I'm kinda busy right now..."
+"Don't worry, I won't keep you - I just wanted to check whether the phone system in the lab is working... obviously, it is."
+"Ah, okay. good news! Sorry, I've got to rush."
+"No problem, talk to you later."
+

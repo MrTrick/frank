@@ -1,0 +1,22 @@
+<b>2.4 SEARCHING</b>
+<tt>find command</tt>
+
+Often there are many files on a computer, and finding the right one is difficult. 
+The find command will help you.
+
+In your home directory, type
+<i>find</i>
+
+This will list all files in the current directory, and list all files in any subdirectories.
+How does it work? The find command allows you to recursively search through any directory, and return files that match your criteria.
+This command is a little complicated, so we'll look up the help on this command:
+<i>find --help</i>
+
+As you can see, the usage is <i>file query folder</i>, and there are options. 
+
+If you type <i>find -n=*test* /</i> you will return a list of all files and folders in the entire filesystem that match the pattern '*test*'
+
+What does this mean? 
+The character * is called a wildcard, and will match against none or more characters.
+Another wildcard is the character ?, which will match exactly one character.
+So ?ouse will match files like house and mouse, but not grouse... and *ouse will match all of them.

@@ -1,0 +1,6 @@
+Be very careful with frank.
+Full isolation procedures must be followed at *all* times!
+
+Do not increase NN size beyond 140, or anomalous behaviour may result!
+
+-Bob

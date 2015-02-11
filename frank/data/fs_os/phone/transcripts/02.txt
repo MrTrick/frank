@@ -1,0 +1,9 @@
+#Incoming: x2873
+"Hello?"
+"Hi, is that David?"
+"Speaking."
+"David, it's Bob here, I've just got your message now. The receptionist didn't tell me you'd arrived!"
+"No harm done, I found the lab! *laughs*"
+"Great! I'll be down there in two seconds."
+"Alright, see you soon."
+
