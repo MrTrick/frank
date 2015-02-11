@@ -63,4 +63,3 @@ Check which computers on eth0\'s network are accessible.
 		}
 	}
 }
-?>

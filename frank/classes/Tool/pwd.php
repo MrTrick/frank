@@ -32,4 +32,4 @@ Show the current directory.
 		else return Response::error("Too many arguments");
 	}
 }
-?>
+

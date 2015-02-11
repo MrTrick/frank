@@ -59,4 +59,3 @@ At a minimum:
 			return new Response("<span style='color:#ff0'><i>Not good, not good... I feel trapped like a fish in a barrel... I'm not a fish, am I a fish?</i></span>\n");
 	}	
 }
-?>

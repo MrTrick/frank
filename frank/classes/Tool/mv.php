@@ -58,7 +58,7 @@ Try to move the <i>fol1</i> directory to <i>/tmp</i> <i>(fails, because /tmp alr
 				
 		//Try and copy the file first...
 		array_pop($s_path);
-		$content =& $session->computer->open($s_path, 'w', $session);
+		$content = $session->computer->open($s_path, 'w', $session);
 		if ($content===false) 
 			return Response::error("Source - ".getError());
 		else if (!isset($content[$s_name]))

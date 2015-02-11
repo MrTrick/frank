@@ -42,4 +42,4 @@ else try {
 }
 
 echo json_encode( $out );
-?>
+

@@ -22,4 +22,3 @@ class NetworkInterface_Dialup extends NetworkInterface {
 	}
 }
 
-?>

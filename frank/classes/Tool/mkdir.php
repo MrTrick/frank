@@ -36,7 +36,7 @@ Create a folder <i>test</i> within the /tmp directory.
 		
 		$path = $session->path($p);
 		$name = array_pop($path);
-		$node =& $session->computer->open($path, 'w', $session);
+		$node = $session->computer->open($path, 'w', $session);
 		
 		if ($node===false) 
 			return Response::error();

@@ -32,4 +32,4 @@ Return the currently logged-in user.
 		else return Response::error("Too many arguments");
 	}
 }
-?>
+

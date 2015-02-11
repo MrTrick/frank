@@ -82,7 +82,7 @@ Search within the current directory for files that contain the word <i>jump</i>.
 		}
 		if (!$path) $path = $session->pwd;
 
-		$start =& $session->computer->getFolderCopy($path, $session);
+		$start = $session->computer->getFolderCopy($path, $session);
 		if (!$start) 
 			return Response::error();
 		else if (!is_array($start)) 

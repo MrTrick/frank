@@ -32,4 +32,4 @@ Display the name of this computer.
 		else return new Response($session->computer->name."<br/>");
 	}
 }
-?>
+

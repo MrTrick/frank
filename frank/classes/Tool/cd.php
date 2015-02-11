@@ -48,7 +48,7 @@ Change to the directory above the current directory
 
 		if (false===($path=$session->path($args[0])))
 			return Response::error(); //Invalid path
-		else if (false===($node=&$session->computer->read($path, $session)))
+		else if (false===($node=$session->computer->read($path, $session)))
 			return Response::error(); //Folder doesn't exist
 		else if (!is_array($node))
 			return Response::error("Not a folder");

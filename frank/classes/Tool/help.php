@@ -37,7 +37,7 @@ can be used to select it.
 		}
 			
 		//No command, instead list all the tools in the /bin folder
-		$tools =& array_keys($session->computer->read('/bin',  $session));
+		$tools = array_keys($session->computer->read('/bin',  $session));
 		sort($tools);
 		$max = 0; foreach($tools as $t) if (strlen($t) > $max) $max = strlen($t);
 		
@@ -50,4 +50,3 @@ can be used to select it.
 		return new Response($r, R_PLAIN);
 	}
 }
-?>

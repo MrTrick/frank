@@ -41,7 +41,7 @@ Try to remove the <i>/home/joe</i> folder <i>(fails, user doesn\'t have permissi
 		if (!$target) return Response::error("Can't delete the root node!");
 		else if ($target=='.permissions') return Response::error("Can't delete .permissions files!");
 		//Try and grab the node the target is in...
-		$node =& $session->computer->open($path, "w", $session);
+		$node = $session->computer->open($path, "w", $session);
 		if ($node===false) return Response::error();
 		
 		if (!isset($node[$target])) return Response::error("Target not found!");

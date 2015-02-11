@@ -21,4 +21,3 @@ class Tool_cam extends Tool_Client {
 	public static function help($alias=null) { return parent::help('cam'); }
 }
 
-?>

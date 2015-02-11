@@ -140,7 +140,3 @@ class Service_ftpd extends Service {
 		return $out;
 	}
 }
-
-
-
-?>

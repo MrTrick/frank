@@ -27,4 +27,3 @@ class NetworkInterface_Wireless extends NetworkInterface {
 	}
 }
 
-?>

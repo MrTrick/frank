@@ -76,7 +76,7 @@ class Computer {
 	//System functions - they ignore permissions
 	//------------------------------------------------
 	public function createFiles($files, $path='') {
-		$node =&$this->getNode($path);
+		$node = $this->getNode($path);
 		if (!is_array($node)) return false;
 		foreach ($files as $name=>$obj) //Add the files and folders in the $files arg to the filesystem...
 			if (is_array($obj) and isset($node[$name])) //If a folder that exists, recurse
@@ -89,7 +89,7 @@ class Computer {
 		$path = trim($path,'/');
 		if (!$path) return $this->filesystem; //Root node?
 		$path = explode('/',$path); //No support for '..' or '.' here...
-		$node =&$this->filesystem;
+		$node = $this->filesystem;
 		foreach($path as $step) if (isset($node[$step])) $node=&$node[$step]; else return setError("File not found");
 		return $node;
 	}
@@ -131,7 +131,7 @@ class Computer {
 	public function getFolderCopy($path, Session &$session, &$skipped=false) {
 		$path = $session->path($path);
 		if ($path===false) return false;
-		$node =& $this->open($path, 'r', $session);
+		$node = $this->open($path, 'r', $session);
 		if ($node===false) { $skipped=true; return array(); }
 		else if (!is_array($node)) return $node;
 		$out = array();
@@ -149,7 +149,7 @@ class Computer {
 		//Pre-emptively disable modifying any .permissions file...
 		if ($file == '.permissions') return setError("Cannot modify .permissions files");
 		//Try and open that directory to write the file in there...
-		$node =& $this->open($path, 'w', $session);
+		$node = $this->open($path, 'w', $session);
 		if ($node===false) return false;
 		//Make sure it's actually a directory
 		else if (!is_array($node)) return setError("Invalid path - cannot write file");
@@ -170,7 +170,7 @@ class Computer {
 // Users
 //-----------------------------------------------------------------------------------------------------------
 	public function addUser($user, $password) {
-		$passwd_file =& $this->getNode('/etc/passwd');
+		$passwd_file = $this->getNode('/etc/passwd');
 		$users = explode_assoc("\n",":",$passwd_file);
 		//Create a home directory if they don't already have one. (except for root... but root is created by default)
 		if (!isset($users[$user])) $this->createFiles(array($user=>array('.permissions'=>"all:\nroot:w\n$user:w")), '/home');
@@ -231,7 +231,7 @@ class Computer {
 	public function &getService($name) {
 		//Services are only in the boot directory.
 		if (strpos($service, '/')!==false) return setError("$name: Invalid service name");
-		$s =& $this->getNode('/boot/'.$name); //Does it have a configuration entry in the boot folder?
+		$s = $this->getNode('/boot/'.$name); //Does it have a configuration entry in the boot folder?
 		if ($s===false) return setError("$name: service not installed");
 		return $s;
 	}
