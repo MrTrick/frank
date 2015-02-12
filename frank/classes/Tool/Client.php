@@ -37,9 +37,9 @@ The HOST must have an $service_name service running for it to accept the connect
 			return Response::error("Too many arguments.");
 		else if (!$hostname = array_shift($args))
 			return Response::error("You must define a host to connect to.");
-		else if (!$host = $session->computer->getNeighbourComputer($hostname))
+		else if (!$host =& $session->computer->getNeighbourComputer($hostname))
 			return Response::error("$hostname is unreachable.");
-		else if (!$service = $host->getService($service_name))
+		else if (!$service =& $host->getService($service_name))
 			return Response::error("$hostname does not respond.");
 		else if (!$service->connect($session, array_shift($args)))
 			return Response::error();

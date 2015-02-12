@@ -12,24 +12,28 @@ Web Location:
 License:
    MIT
 -------------------------------------------------------------------------------------------------*/
-
-session_start();
-header("Cache-control: private"); //IE 6 Fix for dodgy sessions handling...
+define('VERSION', 'v1.0.1');
+if (PHP_SAPI !== 'cli') session_start();
+if (PHP_SAPI !== 'cli') header("Cache-control: private"); //IE 6 Fix for dodgy sessions handling...
 
 //Secret salt - so no enterprising hacking type can use rainbow tables...
 define('SALT', 'aliiiiiive!');
 
 function __autoload($class_name) {
-   $sub = str_replace('_','/',$class_name).'.php';
-   foreach( array('classes/'.$sub, 'data/extra_classes/'.$sub) as $path)
-       if ( file_exists($path) ) require_once( $path );
+   //Fix the include path once
+   static $fixed_path = false;
+   if (!$fixed_path) { set_include_path( __DIR__.'/classes/' . PATH_SEPARATOR . __DIR__.'/data/extra_classes' . PATH_SEPARATOR . get_include_path()); $fixed_path = true; }
+
+   $path = str_replace('_','/',$class_name).'.php';
+   require_once( $path );
 }
 //--------------------------------------------------------------------------------------------------------------------
 $error = '';
-function setError($e) {
+function &setError($e) {
 	global $error;
+	static $false=false;
 	$error = $e;
-	return false;
+	return $false;
 }
 function getError() {
 	global $error;

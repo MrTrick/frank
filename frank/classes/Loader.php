@@ -24,7 +24,7 @@ class Loader {
 	//Start a new game - load the scenario defined in the data scenario, fill in the frank var and return it.
 	public static function create() {
 		//Build the frank object
-		require_once('data/scenario.php');
+		require('data/scenario.php');
 		self::$frank = array();
 		self::$frank['time']=$TIME;
 
@@ -92,7 +92,7 @@ class Loader {
 			//Create an ID for them
 			$id = $_SERVER['REMOTE_ADDR'] . '_' . mt_rand(1000,9999);
 			$_SESSION['frank_id'] = $id;
-			setcookie('progress', $id, time()+2592000);
+			if (PHP_SAPI !== 'cli') setcookie('progress', $id, time()+2592000);
 			
 			//Store frank state just in the session for now, don't save until the user actually does something.
 			self::create();
@@ -105,7 +105,7 @@ class Loader {
 		else {
 			//An ID exists, make sure that it is propagated across both storage methods
 			if (!isset($_SESSION['frank_id']) or !$_SESSION['frank_id']) $_SESSION['frank_id'] = $id;
-			if (!isset($_COOKIE['progress']) or !$_COOKIE['progress']) setcookie('progress', $id, time()+2592000);
+			if (!isset($_COOKIE['progress']) or !$_COOKIE['progress']) if (PHP_SAPI !== 'cli') setcookie('progress', $id, time()+2592000);
 			
 			//Return a prompt:
 			$prompt = new Loader();

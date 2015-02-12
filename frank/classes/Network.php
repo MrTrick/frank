@@ -32,6 +32,10 @@ class Network {
 	public function disconnect(Computer &$computer) {
 		unset($this->computers[$computer->name]);
 	}
+	
+	public static function clear() {
+	   self::$networks = array();
+	}
 }
 
 

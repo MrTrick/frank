@@ -76,20 +76,22 @@ class Computer {
 	//System functions - they ignore permissions
 	//------------------------------------------------
 	public function createFiles($files, $path='') {
-		$node = $this->getNode($path);
+		$node =& $this->getNode($path);
 		if (!is_array($node)) return false;
 		foreach ($files as $name=>$obj) //Add the files and folders in the $files arg to the filesystem...
-			if (is_array($obj) and isset($node[$name])) //If a folder that exists, recurse
-				$this->createFiles($obj, ($path=='')?$name:rtrim($path,'/').'/'.$name); 
-			else //If a file, or a new folder, place it in the filesystem.
+			if (is_array($obj) and isset($node[$name])) { //If a folder that exists, create it first
+				if (!$this->createFiles($obj, ($path=='')?$name:rtrim($path,'/').'/'.$name)) return false; 
+			} else { //If a file, or a new folder, place it in the filesystem.
 				$node[$name] = $obj; 
+	      }
+				
 		return true;
 	}
 	public function &getNode($path) {
 		$path = trim($path,'/');
 		if (!$path) return $this->filesystem; //Root node?
 		$path = explode('/',$path); //No support for '..' or '.' here...
-		$node = $this->filesystem;
+		$node =& $this->filesystem;
 		foreach($path as $step) if (isset($node[$step])) $node=&$node[$step]; else return setError("File not found");
 		return $node;
 	}
@@ -140,7 +142,7 @@ class Computer {
 		return $out;
 	}
 	
-	public function &write($path, $content, Session &$session, $overwrite=false) {
+	public function write($path, $content, Session &$session, $overwrite=false) {
 		//if (DEBUG) { echo "write: ".var_dump($path); var_dump($content);}
 		//Convert the text path into an array of path parts
 		$path = $session->path($path); 
@@ -170,10 +172,13 @@ class Computer {
 // Users
 //-----------------------------------------------------------------------------------------------------------
 	public function addUser($user, $password) {
-		$passwd_file = $this->getNode('/etc/passwd');
+		$passwd_file =& $this->getNode('/etc/passwd');
 		$users = explode_assoc("\n",":",$passwd_file);
 		//Create a home directory if they don't already have one. (except for root... but root is created by default)
-		if (!isset($users[$user])) $this->createFiles(array($user=>array('.permissions'=>"all:\nroot:w\n$user:w")), '/home');
+		if (!isset($users[$user])) {
+		  $res = $this->createFiles(array($user=>array('.permissions'=>"all:\nroot:w\n$user:w")), '/home');
+		  if (!$res) throw new Exception("Could not create home directory for $user");
+		}
 		//Create a line for them in the passwd file (overwrite an old password entry if it exists)
 		$users[$user] = md5(SALT.$password);
 		$passwd_file = implode_assoc("\n",":",$users);
@@ -201,8 +206,9 @@ class Computer {
 	public function getTool($cmd, Session &$session) {
 		//if just the tool name, look in the /bin directory.
 		if (strpos($cmd, '/')===false)
-			$file=$this->getNode('/bin/'.$cmd);
-		else 	$file=$this->read($cmd, $session);
+			$file =& $this->getNode('/bin/'.$cmd);
+		else 	
+		   $file = $this->read($cmd, $session);
 
 		if (!$file) return setError("$cmd: command not found (type 'help' to see command list)");
 		else if (is_object($file)) return setError("$cmd: service is already running.");
@@ -231,7 +237,7 @@ class Computer {
 	public function &getService($name) {
 		//Services are only in the boot directory.
 		if (strpos($service, '/')!==false) return setError("$name: Invalid service name");
-		$s = $this->getNode('/boot/'.$name); //Does it have a configuration entry in the boot folder?
+		$s =& $this->getNode('/boot/'.$name); //Does it have a configuration entry in the boot folder?
 		if ($s===false) return setError("$name: service not installed");
 		return $s;
 	}
@@ -273,4 +279,8 @@ class Computer {
 		return setError(rtrim($errors)); //Computer not found...
 	}
 
+
+   public static function clear() {
+       self::$computers = array();
+   }
 }
