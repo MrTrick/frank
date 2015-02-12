@@ -42,6 +42,7 @@ $ALICE_PASSWORD = 'hackthegibson';
 $BOB_PASSWORD = get_password();
 $SEYMOUR_PASSWORD = get_password();
 //----------------------------------------------------------------------------------------
+$_taken_computer_names = array();
 $HOME_NAME = get_computer_name('lab_',1,10);
 $ALICE_NAME = get_computer_name('lab_',1,10);
 $SECSERV_NAME = get_computer_name('lab_',1,10);

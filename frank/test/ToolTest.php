@@ -21,6 +21,16 @@ class Test_Tools_TestCase extends PHPUnit_Framework_TestCase {
        $this->assertEmpty( ob_get_clean() ); 
     }
     
+    /**
+     * Utility - run a list of commands, expecting responses to start with the given values
+     */
+    protected function runCommandSequence($cmds_responses) {
+       foreach($cmds_responses as $cmd=>$response) {
+          $res = $this->session->execute($cmd);
+          $this->assertStringStartsWith($response, $res->stdout, "Ran '$cmd', expected '$response'");
+       }
+    }
+    
     public function testBasic() {
        //Check the initial response
        $this->assertInstanceOf('Response', $this->init);
@@ -41,28 +51,31 @@ class Test_Tools_TestCase extends PHPUnit_Framework_TestCase {
     }
     
     public function testCat() {
-       $res = $this->session->execute('cat notes.txt');
-       $this->assertStringStartsWith("Be very careful with frank", $res->stdout);
-
-       $res = $this->session->execute('cat /tut/t1.0');
-       $this->assertStringStartsWith("<i>(This is a short tutorial ", $res->stdout);
-       $this->assertTrue( $res->html_mode );
-       
-       $res = $this->session->execute('cat notes.txt crash.log');
-       $this->assertStringStartsWith("<span class='error'>Too many arguments</span>", $res->stdout);
-       
-       $res = $this->session->execute('cat');
-       $this->assertStringStartsWith("<span class='error'>Missing argument, see 'help cat' for usage.", $res->stdout);
-       
-       $res = $this->session->execute('cat /home');
-       $this->assertStringStartsWith("<span class='error'>/home is a folder - to view folder contents, use ls", $res->stdout);
-       
-       $res = $this->session->execute('cat /root');
-       $this->assertStringStartsWith("<span class='error'>Read access denied", $res->stdout);
+       $this->runCommandSequence(array(
+           'cat notes.txt' => "Be very careful with frank",
+           'cat /tut/t1.0' => "<i>(This is a short tutorial ",
+           'cat notes.txt crash.log' => "<span class='error'>Too many arguments</span>",
+           'cat' => "<span class='error'>Missing argument, see 'help cat' for usage.",
+           'cat /home' => "<span class='error'>/home is a folder - to view folder contents, use ls",
+           'cat /root' => "<span class='error'>Read access denied"
+       ));
        
        //TODO: How to trigger the 'file is not readable' response?
     }
     
+    public function testCd() {
+        $this->runCommandSequence(array(
+           'cd foo foo' => "<span class='error'>Too many arguments</span>",
+           'cd' => '/home/frank',
+           'cd /../' => "<span class='error'>Invalid path</span>",
+           'cd /nosuch' => "<span class='error'>File not found</span>",
+           'cd /home/frank/notes.txt' => "<span class='error'>Not a folder</span>",
+           'cd /' => '/',
+           'cd tmp' => '/tmp',
+           'cd ../home' => '/home',
+           'cd ./frank/' => '/home/frank'
+        ));
+    }
     //TODO: Testing all the other tools
  }
     

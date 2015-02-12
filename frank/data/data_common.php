@@ -14,12 +14,13 @@ License:
 -------------------------------------------------------------------------------------------------*/
 
 //Given a prefix and a range, return a random computer name. (Be careful not to call more times than the range is specified over)
+$_taken_computer_names = array();
 function get_computer_name($prefix, $from, $to) {
-	static $taken=array();
+	global $_taken_computer_names;
 	do {
 		$name = $prefix.mt_rand($from,$to);
-	} while(isset($taken[$name]));
-	$taken[$name]=true;
+	} while(isset($_taken_computer_names[$name]));
+	$_taken_computer_names[$name]=true;
 	return $name;
 }
 //Get a password from the short_words.txt file
