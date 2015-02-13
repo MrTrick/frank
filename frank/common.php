@@ -85,7 +85,7 @@ function getDateStamp($time=null) {
 //--------------------------------------------------------------------------------------------------------------------
 function explode_assoc($sep_prop, $sep_key, $string) {
 	$out = array();
-	foreach (explode($sep_prop, trim(trim($string), $sep_prop)) as $property) {
+	foreach (explode($sep_prop, trim(trim($string), $sep_prop)) as $property) if ($property) { 
 		list($k,$v) = explode($sep_key,$property);
 		$out[$k]=$v;
 	}

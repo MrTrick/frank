@@ -29,7 +29,7 @@ abstract class Service {
 		
 		//If correct credentials provided, or none provided and none required, success!! Go to onConnection. (if no credentials, username is anonymous)
 		if ( ($credentials and $user=$this->host->authenticate($credentials)) or (!$credentials and !$this->auth_required) ) {
-			$client_session->next = new Session($this->host, $user?$user:'anonymous');
+			$client_session->next = new Session($this->host, ($credentials && $user) ? $user : 'anonymous');
 			$session_data['entry'] = 'onConnection';
 			return true;
 		}

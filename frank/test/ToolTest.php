@@ -1,35 +1,8 @@
 <?
-chdir(__DIR__.'/../');
-require_once 'common.php';
-spl_autoload_register('__autoload');
-$_SERVER['REMOTE_ADDR'] = 'testing';
+require_once 'Common.php';
    
-class Test_Tools_TestCase extends PHPUnit_Framework_TestCase {
+class Frank_Tools_TestCase extends Frank_Common_TestCase {
     protected $name = "Tools";
-    
-    public function setUp() {
-       //Wipe away any evidence from the previous test
-       $_SESSION = array();
-       $_COOKIE = array();
-       foreach( glob("../stored/testing*") as $file ) @unlink($file);
-    
-       //Initialise a new session (start a new game)
-       //(ob_start and ob_get_clean are needed to prevent phpunit from complaining about headers)
-       ob_start(); 
-       $this->init = Loader::init();
-       $this->session = Loader::getEntry();
-       $this->assertEmpty( ob_get_clean() ); 
-    }
-    
-    /**
-     * Utility - run a list of commands, expecting responses to start with the given values
-     */
-    protected function runCommandSequence($cmds_responses) {
-       foreach($cmds_responses as $cmd=>$response) {
-          $res = $this->session->execute($cmd);
-          $this->assertStringStartsWith($response, $res->stdout, "Ran '$cmd', expected '$response'");
-       }
-    }
     
     public function testBasic() {
        //Check the initial response
@@ -48,6 +21,14 @@ class Test_Tools_TestCase extends PHPUnit_Framework_TestCase {
        $res = $this->session->execute('user');
        $this->assertInstanceOf('Response', $res);
        $this->assertStringStartsWith("frank<br />", $res->stdout);
+    }
+    
+    public function testExecution() {
+       //Valid executable
+       $this->runCommandSequence(array('user'=>'frank'));
+       
+       //Load an invalid one and try to execute it.
+       $this->runCommandSequence(array('./notes.txt'=>"<span class='error'>./notes.txt: not a valid executable.</span>"));
     }
     
     public function testCat() {
@@ -76,6 +57,88 @@ class Test_Tools_TestCase extends PHPUnit_Framework_TestCase {
            'cd ./frank/' => '/home/frank'
         ));
     }
+    
+    public function testCp() {
+       $this->runCommandSequence(array(
+           'cp foo foo foo' => "<span class='error'>Too many arguments</span>",
+           'cp' => "<span class='error'>You must specify a source file or folder to copy.</span>",
+           'cp notes.txt' => "<span class='error'>You must specify a target to copy to.</span>",    
+           'cp / /tmp' => "<span class='error'>Cannot copy /</span>",
+           'cp /root/ /tmp/' => "<span class='error'>Source - Read access denied</span>", 
+           'cp notes.txt foo.txt' => "notes.txt copied",
+       ));       
+       $this->assertNotEmpty($this->session->computer->getNode('/home/frank/foo.txt'), "notes.txt was actually copied");       
+    }
+    
+    public function testFtp() {
+        //The ftp server is the last computer in the network
+        $network = Network::$networks['LAB_SECURE'];
+        $lab_ftp = end($network->computers);
+
+        //Connect as anonymous
+        $this->runCommandSequence(array(
+            "ftp $lab_ftp->name" => "Connected to ftpd - File server on $lab_ftp->name - as anonymous<br />",
+            "help" => "FTP Commands are:\n",
+            //Passes through to computer tools
+            "pwd" => "/ftp", 
+            "ls" => "Contents of /ftp:<br />\n&nbsp;<span style='color:#00f'>camera/</span><br />\n&nbsp;<span style='color:#00f'>isos/</span><br />\n&nbsp;<span style='color:#00f'>scratch/</span>",
+            //Put function - not allowed for anonymous
+            "put notes.txt" => "<span class='error'>Target error - Write access denied</span>",
+            //Get function 
+            "get scratch/bunny.jpg" => "File transferred successfully to /home/frank/bunny.jpg",         
+        ));
+        
+        //Check - was the file transferred?
+        $this->assertNotEmpty($this->session->computer->getNode('/home/frank/bunny.jpg'), "File was copied back to client computer");
+        
+        //Check - that there is a current FTP session        
+        $this->assertNotEmpty($this->session->state, "Still connected");
+        $this->assertNotEmpty($this->session->next, "Still connected");
+        
+        $this->runCommandSequence(array(
+            "quit" => "Bye!",
+            "ls" => "Contents of /home/frank"
+        ));
+        
+        //Check that the ftp session was closed
+        $this->assertEmpty($this->session->state, "Detached");
+        $this->assertEmpty($this->session->next, "Detached");
+            
+             
+        $lab_ftp->addUser("testuser","password");
+        
+        $this->runCommandSequence(array(
+          "ftp $lab_ftp->name testuser:password" => "Connected to ftpd - File server on $lab_ftp->name - as testuser<br />",
+          "put notes.txt" => "File transferred successfully to /ftp/notes.txt",
+          "quit" => "Bye!"
+        ));
+    }
+    
+    public function testSsh() {
+        $lab_server = end(Network::$networks['LAB_SECURE']->computers);
+        $lab_server->addUser("testuser","password");
+        
+        $this->runCommandSequence(array( 
+           "ssh $lab_server->name testuser" => "<span class='error'>Access denied - authentication failure</span>",
+           "ssh $lab_server->name someone:password" => "<span class='error'>Access denied - authentication failure</span>",
+        ));
+        
+        //TODO: all the other tests
+    }
+    
+    public function testPing() {
+        $lab_server = end(Network::$networks['LAB_SECURE']->computers);       
+        
+        $this->runCommandSequence(array(
+           "ping $lab_server->name" => "$lab_server->name responds",
+           "ping -broadcast eth0" => "Accessible computers on network LAB_SECURE:",
+           "ping -broadcast eth1" => "<span class='error'>Interface eth1 does not exist</span>"
+        ));
+        
+        //TODO: all the other tests
+    }
+   
+    
     //TODO: Testing all the other tools
  }
     

@@ -50,7 +50,7 @@ class Session {
 	public function __construct(&$computer, $user) {
 		$this->computer =& $computer;
 		$this->user = $user;
-
+		
 		$sh_defaults = $this->getShellDefaults();	
 		$this->prompt = $this->sub($sh_defaults['prompt']);
 		$this->pwd = $this->path($this->sub($sh_defaults['pwd']));
@@ -90,7 +90,8 @@ class Session {
 
 	//Get the default values from the /etc/sh config file
 	public function getShellDefaults() {
-		return explode_assoc("\n","=",$this->computer->read('/etc/sh', $this));
+	   $sh = $this->computer->read('/etc/sh', $this);
+		return $sh ? explode_assoc("\n","=",$sh) : array('prompt'=>'>', 'pwd'=>'/');
 	}
 
 	//Display a welcome message from that computer, using the .motd file if it exists.

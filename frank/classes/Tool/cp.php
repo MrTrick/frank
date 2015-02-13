@@ -44,6 +44,9 @@ Try to copy the <i>fol1</i> directory to <i>/tmp</i> <i>(fails, because /tmp alr
 			return Response::error("You must specify a target to copy to.");
 			
 		$s_path = $session->path($s);
+		if (!$s_path)
+		   return Response::error("Cannot copy /");
+		
 		$s_name = $s_path[count($s_path)-1];
 				
 		$t_path = $session->path($t);
@@ -51,8 +54,7 @@ Try to copy the <i>fol1</i> directory to <i>/tmp</i> <i>(fails, because /tmp alr
 		
 		//Try and copy the file...
 		$content = $session->computer->getFolderCopy($s_path, $session, $skipped);
-		//$content = $session->computer->read($s_path, $session);
-		if ($content===false) 
+		if (empty($content))
 			return Response::error("Source - ".getError());
 		//if ($_name=='.permissions') 
 		//	return Response::error("Cannot copy permissions files");

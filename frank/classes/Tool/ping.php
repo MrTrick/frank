@@ -49,7 +49,7 @@ Check which computers on eth0\'s network are accessible.
 		//Broadcast mode
 		else if (!$if_name=array_shift($args)) 
 			return Response::error('If using the -broadcast option you must specify an interface to broadcast over.');
-		else if (!$config=explode_assoc("\n","=",$interfaces[$if_name]))
+		else if (!isset($interfaces[$if_name]) || !$config=explode_assoc("\n","=",$interfaces[$if_name]))
 			return Response::error("Interface $if_name does not exist");
 		else if ($config['status']!='up') 
 			return Response::error("$if_name is inactive");

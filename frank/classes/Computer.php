@@ -151,7 +151,7 @@ class Computer {
 		//Pre-emptively disable modifying any .permissions file...
 		if ($file == '.permissions') return setError("Cannot modify .permissions files");
 		//Try and open that directory to write the file in there...
-		$node = $this->open($path, 'w', $session);
+		$node =& $this->open($path, 'w', $session);
 		if ($node===false) return false;
 		//Make sure it's actually a directory
 		else if (!is_array($node)) return setError("Invalid path - cannot write file");
@@ -187,9 +187,9 @@ class Computer {
 	//Given a username and password, checks to see if that user/password pair exists in the /.passwd file.
 	//Returns true if it matches, false if a mismatch or the .passwd file is missing.
 	public function authenticate($user, $password=null) {
-		if (!$password) list($user, $password) = explode(':', $user);
+		if (!$password) list($user, $password) = array_pad(explode(':', $user, 2), 2, null);
 		$users = explode_assoc("\n",":",$this->getNode('/etc/passwd'));
-		if (md5(SALT.$password) == $users[$user]) return $user;
+		if (isset($users[$user]) && md5(SALT.$password) == $users[$user]) return $user;
 		else return false;
 	}
 
@@ -214,7 +214,7 @@ class Computer {
 		else if (is_object($file)) return setError("$cmd: service is already running.");
 		else if (is_array($file)) return setError("$cmd: not a valid executable.");
 
-		list($tool, $hash) = explode(":", $file); 
+		list($tool, $hash) = array_pad(explode(":", $file), 2, null); 
 		//Is the hash right?
 		if ($hash != md5(SALT.$tool)) return setError("$cmd: not a valid executable."); //Not a real 'executable'
 		//Does the tool exist in the system?
@@ -236,7 +236,7 @@ class Computer {
 	
 	public function &getService($name) {
 		//Services are only in the boot directory.
-		if (strpos($service, '/')!==false) return setError("$name: Invalid service name");
+		if (strpos($name, '/')!==false) return setError("$name: Invalid service name");
 		$s =& $this->getNode('/boot/'.$name); //Does it have a configuration entry in the boot folder?
 		if ($s===false) return setError("$name: service not installed");
 		return $s;

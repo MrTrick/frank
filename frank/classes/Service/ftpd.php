@@ -96,16 +96,20 @@ class Service_ftpd extends Service {
 		
 		//Parse the 'to' argument - if not specified, use the file named by 'to'...
 		$to = array_shift($args);
-		if (!$to) $to = array_pop($from_session->path($from)); //To is the last element of the from path...
+		if (!$to) {
+  		   $from_path = $from_session->path($from);
+  		   $to = end($from_path); //To is the last element of the from path...
+  		}
 		
 		//Try and read the source file...
 		$file = $from_session->computer->read($from, $from_session);
 		if ($file===false) return Response::error("Source error - ".getError());
+		
 		//Try and write it to the client...
 		if (!$to_session->computer->write($to, $file, $to_session)) 
 			return Response::error("Target error - ".getError());
-	
-		return new Response("File transferred successfully to /".implode('/',$to_session->path($to))."\n");
+
+		return new Response((is_array($file) ? "Folder" : "File") . " transferred successfully to /".implode('/',$to_session->path($to))."\n");
 	}
 	
 	public function run(Session &$client_session, $input) {
