@@ -61,24 +61,6 @@ class	Response {
 	public $version=VERSION;
 }
 //--------------------------------------------------------------------------------------------------------------------
-if (!function_exists('json_encode')) {
-	function json_encode($s)
-	{
-		if(is_numeric($s)) return $s;
-		else if(is_string($s)) return preg_replace("@([\1-\037])@e","sprintf('\\\\u%04X',ord('$1'))",str_replace("\0", '\u0000', utf8_decode(json_encode(utf8_encode($s))))); 
-		else if($s===false) return 'false';
-		else if($s===true) return 'true';
-		else if(is_array($s)) {
-			$c=0; foreach($s as $k=>&$v) if($k !== $c++) {
-				foreach($s as $k=>&$v) $v = json_encode((string)$k).':'.json_encode($v);
-				return '{'.join(',', $s).'}';
-			}
-			return '[' . join(',', array_map('json_encode', $s)) . ']';
-		}
-		else return 'null';
-	}
-}
-//--------------------------------------------------------------------------------------------------------------------
 function getDateStamp($time=null) {
 	return date('Y-m-d H:i:s',$time?$time:Loader::$frank['time']);
 }
