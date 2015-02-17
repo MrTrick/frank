@@ -203,6 +203,13 @@ class Computer {
 		if (!$r) throw new Exception("Cannot create tool");
 	}
 	
+	public static function isExecutable($file) {
+	   if (!is_string($file)) return false;
+	   list($tool, $hash) = array_pad(explode(":", $file), 2, null); 
+
+	   return $hash === md5(SALT.$tool);
+	}	
+	
 	public function getTool($cmd, Session &$session) {
 		//if just the tool name, look in the /bin directory.
 		if (strpos($cmd, '/')===false)

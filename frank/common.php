@@ -60,6 +60,7 @@ class	Response {
 	public $history;
 	public $version=VERSION;
 }
+   
 //--------------------------------------------------------------------------------------------------------------------
 function getDateStamp($time=null) {
 	return date('Y-m-d H:i:s',$time?$time:Loader::$frank['time']);

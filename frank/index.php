@@ -22,16 +22,26 @@ if (isset($_POST['init'])) {
 }
 else try {
 	Loader::load();
-
-	$in = htmlspecialchars(trim($_POST['stdin']));
+	$session = Loader::getEntry();
 	
-	$entry = Loader::getEntry();
-	$out = $entry->execute($in);
+	//Has the user entered a command?
+	if (array_key_exists('stdin', $_POST)) {
+		$in = htmlspecialchars(trim($_POST['stdin']));
 
-	//If $out is false, the user tried to exit too far...
-	if (!$out) $out = new Response("<span style='color:#ff0'><i>You feel dizzy...</i> don't DO that!</span><br/>" . $entry->sub($entry->prompt));
+		//Run the command
+		$out = $session->execute($in);
+	   
+	   //If $out is false, the user tried to exit too far...
+	   if (!$out) $out = new Response("<span style='color:#ff0'><i>You feel dizzy...</i> don't DO that!</span><br/>" . $session->sub($session->prompt));
+	   
+  	   Loader::save($in, $out);
+	}
 	
-	Loader::save($in, $out);
+	//Or are they after autocomplete?
+	else if (array_key_exists('autocomplete', $_POST)) {
+	   $line = $_POST['autocomplete'];
+	   $out = $session->autocomplete($line);
+	}
 	
 	//Check to see if the user finished the game...if so, retire their log files.
 	if (isset($out->game_over)) Loader::finish();

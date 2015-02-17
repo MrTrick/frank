@@ -17,6 +17,7 @@ class Loader {
 	public static $frank;
 	public static $save_history=true; //Can be disabled - don't want to append history over history when restoring a current game.
 	
+	//Get the outermost session
 	public static function &getEntry() {
 		return self::$frank['entry'];
 	}

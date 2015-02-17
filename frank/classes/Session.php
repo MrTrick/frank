@@ -64,7 +64,7 @@ class Session {
 		//If already an array, assume that it's in absolute form already.
 		if (is_array($path)) return $path;
 		//Start at the working directory, or at the root node if path string is absolute.
-		$out = ($path{0}=='/') ? array() : $this->pwd;
+		$out = ($path && $path{0}=='/') ? array() : $this->pwd;
 		//Is there any path to iterate through (FIXES EXPLODE PROBLEM WHEN STRING IS EMPTY)
 		$path = trim($path, '/');
 		if (!$path) return $out;
@@ -138,4 +138,73 @@ class Session {
 	
 		return $output;
 	}
+	
+//-----------------------------------------------------------------------------------------------------------
+//Autocomplete method
+//-----------------------------------------------------------------------------------------------------------		
+
+   public function autocomplete($partial) {
+      //Examine the given names to see what can be suggested      
+      $generate = function($pre, array $names) {
+          //Which names match the prefix?
+          $choices = array_values(array_filter($names, function($n) use ($pre) { 
+             return !strncmp($pre,$n,strlen($pre)); 
+          }));
+          
+          //How many characters can be autocompleted?
+          for($suggest = '', $i = strlen($pre); ($c=@$choices[0][$i]) !== ''; $i++, $suggest .= $c) {          
+             for($n=1; $n < count($choices); $n++)
+                 if (@$choices[$n][$i] !== $c) break 2;        
+          }
+          
+          return (object)array('suggest'=>$suggest, 'choices'=>$choices, 'prompt'=>$this->sub($this->prompt));
+      };
+      
+      //We want to know the last word the user is typing, and whether there were characters before it.
+      if(!preg_match("|(\\S\\s+)?(\\S*)$|", $partial, $m)) throw new Exception("Couldn't parse autocomplete partial");
+      $prev = $m[1];
+      $word = $m[2];
+
+      //Split the word into path and partial parts
+      if (!preg_match("|^((.*)/)?([^/]*)$|", $word, $m)) throw new Exception("Coudn't parse autocomplete command");
+      $path = $m[1];        
+      $partial = $m[3];
+            
+      //Is it the first word in the input, and thus a partial command?
+      if (!$prev) {
+         //No path? Return the system tools
+         if (!$path) $path = '/bin';
+         
+         //Get the current folder
+         $folder = $this->computer->read($path, $this);
+         if (!is_array($folder)) return $generate("",array());         
+
+         //Limit to folders or executable files
+         $names = array();
+         foreach($folder as $name=>$file) {
+             if ($name === '.permissions') continue;
+             else if (is_array($file)) $names[] = $name.'/';         
+             else if (Computer::isExecutable($file)) $names[] = $name;
+         }
+
+         return $generate($partial, $names);
+      }
+      //Otherwise, match any folder or file
+      else {    
+         //Get the current folder
+         $folder = $this->computer->read($path, $this);
+         if (!is_array($folder)) return $generate("",array());
+      
+         //Match any files or folders
+         $names = array();
+         foreach($folder as $name=>$file) {
+             if ($name === '.permissions') continue;
+             else if (is_array($file)) $names[] = $name.'/';         
+             else $names[] = $name;
+         }
+         
+         return $generate($partial, $names);
+      }         
+
+   }   
 }
