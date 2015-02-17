@@ -14,7 +14,7 @@ License:
 //Look at me, I'm javascript code!
 
 //Objects in the window
-var console;
+var frank_console;
 var input_line;
 var input_box;
 
@@ -39,7 +39,7 @@ var toUpdate = false;
 //Initialise the application
 function load() {
 	//Alias the commonly-used areas of the DOM
-	console = document.getElementById('console');
+	frank_console = document.getElementById('console');
 	input_line = document.getElementById('input_line');
 	input_box = document.getElementById('input_box');
 	
@@ -55,13 +55,21 @@ function load() {
 }
 
 //Handle non-printed keys
+var autocomplete_tab_twice = false;
 function keydown(event) {
 	ret=true;
 	if (event.keyCode==KEY_TAB)  {
+	   autocomplete(autocomplete_tab_twice);
+	   autocomplete_tab_twice = true;
+		
+	   //Stop focus from changing
 		if (window.opera) { setTimeout(function() {input_box.focus();},5); } //Don't allow TAB to change focus, for Opera browsers...
 		return false; //For IE, don't allow TAB to change focus (if browser listens to it)	
-	}
-	else if (event.keyCode==KEY_ENTER) { sendInput(); }
+	} else {
+    	autocomplete_tab_twice = false;
+   }
+	
+	if (event.keyCode==KEY_ENTER) { sendInput(); }
 	else if (event.keyCode==KEY_ESC) { input_box.value=''; cmd_history.reset(); ret=false;}
 	else if (event.keyCode==KEY_UP) { input_box.value = cmd_history.prev(); setCaretToEnd(input_box);  ret=false;}
 	else if (event.keyCode==KEY_DOWN) { input_box.value = cmd_history.next(); setCaretToEnd(input_box);  }
@@ -80,7 +88,7 @@ function keypress(event) { if (event.keyCode==KEY_TAB) {return false;} } //TAB o
 function updateInputArea() {
 	input_line.innerHTML = chunkText(input_box.value, 80, getOffset(), getSelectionStart(input_box), getSelectionEnd(input_box));
 	toUpdate = false;
-	scrollToBottom(console);
+	scrollToBottom(frank_console);
 }
 
 function ajaxError(code, response) {
@@ -100,11 +108,11 @@ function ajaxError(code, response) {
 
 function print(text, htmlEnabled, type) {
 	if (!htmlEnabled) { text = chunkText(text, 80, getOffset()); }
-	console.removeChild(input_line);
-	if (defined(type)) { console.innerHTML += '<span class="'+type+'">'+text+'</span>'; }
-	else { console.innerHTML += text; }
-	console.appendChild(input_line);
-	scrollToBottom(console);
+	frank_console.removeChild(input_line);
+	if (defined(type)) { frank_console.innerHTML += '<span class="'+type+'">'+text+'</span>'; }
+	else { frank_console.innerHTML += text; }
+	frank_console.appendChild(input_line);
+	scrollToBottom(frank_console);
 }
 function printError(text) {
 	print("<span class=\"error\">Error:<br/>"+text+"</span>", true);
@@ -115,7 +123,7 @@ function freeze() {
 	input_box.onkeydown = null;
 	input_box.onkeypress = null;
 	document.getElementsByTagName('body')[0].onfocus=null;
-	console.onclick=null;
+	frank_console.onclick=null;
 }
 
 //------------------------------------------------------------------------------------------------------------------------------
@@ -130,6 +138,40 @@ function sendInput() {
 	print(line + "\n", false, 'input'); //Print it, and escape any html in the input box
 
 	ajax.load('frank/', {"stdin":line}, handleAJAXResponse);
+}
+
+function autocomplete(twice) {
+   var line = input_box.value;
+	var caret = getSelectionStart(input_box);
+	var partial = line.substr(0, caret);
+	
+	ajax.load('frank/', {"autocomplete": partial}, function(response) {
+	   //Has the input changed since requesting autocomplete?
+	   //Our response is possibly out of date, so ignore it.
+	   if (line !== input_box.value) return;
+	   
+	   //Is the session in a mode that supports autocomplete?
+	   if (!response) return;
+	
+	   //If the input can be autocompleted, do so
+      var make_space = response.choices 
+                    && response.choices.length == 1 
+                    && response.choices[0].charAt(response.choices[0].length - 1) !== '/';
+	   
+	   var suggest = response.suggest + (make_space ? ' ' : ''); 
+	   if (suggest) {
+	       input_box.value = line.substr(0, caret) + suggest + line.substr(caret); 
+	       setCaret(input_box, caret + suggest.length); 
+	       updateInputArea();
+	   }
+	   
+	   //Otherwise, display the choices
+	   else if (twice) {
+	       print(line + "\n", false, 'input');
+	       print(response.choices.join("  ") + "\n" + response.prompt, false);
+	   }
+	   
+	});
 }
 
 function handleAJAXResponse(args) {
@@ -217,6 +259,10 @@ function getSelectionEnd(control) { //Get the index of the end of the selection
 	if (range.compareEndPoints("StartToEnd", range)!==0) { range.collapse(false); }
 	var b = range.getBookmark();
 	return b.charCodeAt(2) - 2;
+}
+function setCaret(control, position) {
+   if (defined(control.setSelectionRange)) { return control.setSelectionRange(position, position); }
+   alert("Oops, not supported on IE < 9");
 }
 function scrollToBottom(control) {
 	control.scrollTop = (control.scrollHeight>control.offsetHeight)?control.scrollHeight:control.offsetHeight;

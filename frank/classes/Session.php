@@ -142,24 +142,36 @@ class Session {
 //-----------------------------------------------------------------------------------------------------------
 //Autocomplete method
 //-----------------------------------------------------------------------------------------------------------		
-
-   public function autocomplete($partial) {
-      //Examine the given names to see what can be suggested      
-      $generate = function($pre, array $names) {
-          //Which names match the prefix?
-          $choices = array_values(array_filter($names, function($n) use ($pre) { 
-             return !strncmp($pre,$n,strlen($pre)); 
-          }));
+   /**
+    * Given the appropriate names and a prefix, generate the autocomplete output
+    */
+   protected function autocomplete_output($pre, array $names) {
+      //Which names match the prefix?
+      $choices = array_values(array_filter($names, function($n) use ($pre) { 
+         return !strncmp($pre,$n,strlen($pre)); 
+      }));
           
-          //How many characters can be autocompleted?
-          for($suggest = '', $i = strlen($pre); ($c=@$choices[0][$i]) !== ''; $i++, $suggest .= $c) {          
-             for($n=1; $n < count($choices); $n++)
-                 if (@$choices[$n][$i] !== $c) break 2;        
-          }
-          
-          return (object)array('suggest'=>$suggest, 'choices'=>$choices, 'prompt'=>$this->sub($this->prompt));
-      };
+      //How many characters can be autocompleted?
+      for($suggest = '', $i = strlen($pre); 
+          $choices && $i < strlen($choices[0]) && ($c = $choices[0][$i]) !== '';
+          $i++, $suggest .= $c
+      ) {
+         for($n=1; $n < count($choices); $n++)
+            if ($i>=strlen($choices[$n]) || $choices[$n][$i] !== $c) break 2;        
+      }
+        
+      return (object)array('suggest'=>$suggest, 'choices'=>$choices, 'prompt'=>$this->sub($this->prompt));
+   }
       
+   public function autocomplete($partial) {
+      //Is something running in the session?
+      if ($this->state) {
+         if ($this->state == array('Tool_ssh', 'execute') && $this->next) 
+             return ($this->next->autocomplete($partial));
+         else
+             return null;
+      }
+   
       //We want to know the last word the user is typing, and whether there were characters before it.
       if(!preg_match("|(\\S\\s+)?(\\S*)$|", $partial, $m)) throw new Exception("Couldn't parse autocomplete partial");
       $prev = $m[1];
@@ -177,7 +189,7 @@ class Session {
          
          //Get the current folder
          $folder = $this->computer->read($path, $this);
-         if (!is_array($folder)) return $generate("",array());         
+         if (!is_array($folder)) return $this->autocomplete_output("",array());         
 
          //Limit to folders or executable files
          $names = array();
@@ -187,13 +199,13 @@ class Session {
              else if (Computer::isExecutable($file)) $names[] = $name;
          }
 
-         return $generate($partial, $names);
+         return $this->autocomplete_output($partial, $names);
       }
       //Otherwise, match any folder or file
       else {    
          //Get the current folder
          $folder = $this->computer->read($path, $this);
-         if (!is_array($folder)) return $generate("",array());
+         if (!is_array($folder)) return $this->autocomplete_output("",array());
       
          //Match any files or folders
          $names = array();
@@ -203,7 +215,7 @@ class Session {
              else $names[] = $name;
          }
          
-         return $generate($partial, $names);
+         return $this->autocomplete_output($partial, $names);
       }         
 
    }   
