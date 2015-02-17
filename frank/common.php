@@ -12,7 +12,7 @@ Web Location:
 License:
    MIT
 -------------------------------------------------------------------------------------------------*/
-define('VERSION', 'v1.0.1');
+define('VERSION', 'v1.2.0');
 if (PHP_SAPI !== 'cli') session_start();
 if (PHP_SAPI !== 'cli') header("Cache-control: private"); //IE 6 Fix for dodgy sessions handling...
 
