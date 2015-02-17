@@ -40,13 +40,12 @@ Search within the current directory for files that contain the word <i>jump</i>.
 	
 	private static function find($contents, $name, &$args) {
 		if ($name=='.permissions') return; //Don't return any permissions files
-		
 		//Is this node a directory?
 		if (is_array($contents)) {
 			if($name) array_push($args['path'], $name);
 			array_walk($contents, array(__CLASS__, 'find'), $args);
 			array_pop($args['path']);
-			if (isset($args['content_filters'])) return; //Drop out early if there are any content filters active...
+			if (!empty($args['content_filters'])) return; //Drop out early if there are any content filters active...
 		}
 		foreach($args['name_filters'] as $filter)
 			if (!preg_match($filter, $name)) return; //Ignore any files or folders that don't match a name filter
@@ -80,7 +79,8 @@ Search within the current directory for files that contain the word <i>jump</i>.
 			else if (!is_array($path=$session->path($term)))
 				return Response::error();
 		}
-		if (!$path) $path = $session->pwd;
+		
+		if ($path === null) $path = $session->pwd;
 
 		$start = $session->computer->getFolderCopy($path, $session);
 		if (!$start) 
@@ -91,7 +91,6 @@ Search within the current directory for files that contain the word <i>jump</i>.
 		$name = array_pop($path);
 		$out = array();
 		$args = array('name_filters'=>&$name_filters, 'content_filters'=>&$content_filters, 'out'=>&$out, 'path'=>&$path);
-		//var_dump($args); die;
 		self::find($start,$name,$args);
 		return new Response(implode("\n",$out).($out?"\n":'')."Results: ".count($out)."\n");
 		

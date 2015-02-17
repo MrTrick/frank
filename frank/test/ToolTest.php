@@ -123,7 +123,7 @@ class Frank_Tools_TestCase extends Frank_Common_TestCase {
            "ssh $lab_server->name someone:password" => "<span class='error'>Access denied - authentication failure</span>",
         ));
         
-        //TODO: all the other tests
+        //TODO: all the other ssh tests
     }
     
     public function testPing() {
@@ -135,12 +135,19 @@ class Frank_Tools_TestCase extends Frank_Common_TestCase {
            "ping -broadcast eth1" => "<span class='error'>Interface eth1 does not exist</span>"
         ));
         
-        //TODO: all the other tests
+        //TODO: all the other ssh tests
     }
-   
+    
+    public function testFind() {
+        $find_all = $this->runCommandSequence(array(
+            "cd /tmp/" => "/tmp",
+            "find" => "/tmp/test.txt<br />\n/tmp/mail/20110303.msg<br />\n/tmp/mail/20110215.msg<br />\n/tmp/mail<br />\n/tmp/hello<br />\n/tmp",
+            "find -n=*.msg" => "/tmp/mail/20110303.msg<br />\n/tmp/mail/20110215.msg",
+            "find -c=FRANK" => "/tmp/mail/20110303.msg",
+            "find /" => "/"
+        ));       
+        $this->assertStringEndsWith("Results: 63<br />\n[".$this->session->computer->name."]>",$find_all->stdout);
+    }
     
     //TODO: Testing all the other tools
  }
-    
-    
-       
