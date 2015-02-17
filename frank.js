@@ -28,6 +28,9 @@ var KEY_ENTER = 13;
 var KEY_UP = 38;
 var KEY_DOWN =40;
 var KEY_ESC = 27;
+var KEY_CTRL = 17;
+var KEY_C = 67;
+var KEY_D = 68;
 
 //Global vars
 var toUpdate = false;
@@ -56,6 +59,7 @@ function load() {
 
 //Handle non-printed keys
 var autocomplete_tab_twice = false;
+var ctrl_key_down = false;
 function keydown(event) {
 	ret=true;
 	if (event.keyCode==KEY_TAB)  {
@@ -70,12 +74,17 @@ function keydown(event) {
    }
 	
 	if (event.keyCode==KEY_ENTER) { sendInput(); }
+	else if (event.keyCode==KEY_CTRL) { ctrl_key_down = true; }
 	else if (event.keyCode==KEY_ESC) { input_box.value=''; cmd_history.reset(); ret=false;}
 	else if (event.keyCode==KEY_UP) { input_box.value = cmd_history.prev(); setCaretToEnd(input_box);  ret=false;}
 	else if (event.keyCode==KEY_DOWN) { input_box.value = cmd_history.next(); setCaretToEnd(input_box);  }
+	else if (event.keyCode==KEY_C && ctrl_key_down) { input_box.value = ''; ret=false; }
+	else if (event.keyCode==KEY_D && ctrl_key_down && input_box.value=='') { input_box.value = 'exit'; sendInput(); ret = false;}
+	
 	if (!toUpdate) { toUpdate = setTimeout(updateInputArea,1); }
 	return ret;
 }	
+function keyup(event) { if (event.keyCode==KEY_CTRL) { ctrl_key_down = false; } }
 //Handle printed keys.	
 function keypress(event) { if (event.keyCode==KEY_TAB) {return false;} } //TAB override, for Firefox and others.
 
